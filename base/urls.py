@@ -12,4 +12,5 @@ urlpatterns = [
     path('getNotes', views.getNotes), # private zone
     path('register', views.register),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('products', views.products),
 ]

@@ -6,7 +6,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import serializers
 
+from base.models import Product
 def index(req):
     return Response('hello')
 
@@ -21,6 +23,18 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # ...
         return token
 
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def products(req):
+    if req.method =='GET':
+        user= req.user
+        temp_task=user.product_set.all()
+        return Response (ProductSerializer(temp_task,many=True).data)
 
 
 
